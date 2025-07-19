@@ -63,10 +63,10 @@ const AuctionPage = () => {
   };
 
   if (!auction) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading auction...</p>
+    <div className="loading-container">
+      <div>
+        <div className="loading-spinner"></div>
+        <p className="loading-text">Loading auction...</p>
       </div>
     </div>
   );
@@ -74,53 +74,50 @@ const AuctionPage = () => {
   const isAuctionOver = new Date(auction.endTime) < new Date();
 
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-7xl mx-auto">
-        <Link 
+    <main>
+      <Link 
           to="/" 
-          className="inline-flex items-center space-x-2 text-gray-400 hover:text-white transition-colors mb-6"
+          className="back-link"
         >
           <FaArrowLeft />
           <span>Back to Auctions</span>
         </Link>
         
-        <div className="bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-700">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="relative">
+        <div className="auction-detail">
+          <div className="auction-detail-grid">
+            <div className="auction-detail-image">
               <img 
                 src={auction.imageUrl} 
                 alt={auction.title} 
-                className="w-full h-96 lg:h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent lg:hidden"></div>
             </div>
             
-            <div className="p-8 lg:p-12">
-              <div className="mb-6">
-                <h1 className="text-4xl font-bold text-white mb-4">{auction.title}</h1>
-                <div className="flex items-center text-gray-400 mb-4">
+            <div className="auction-detail-content">
+              <div style={{marginBottom: '24px'}}>
+                <h1 className="auction-detail-title">{auction.title}</h1>
+                <div className="auction-detail-seller">
                   <FaUser className="mr-2" />
-                  <span>Sold by: <span className="text-primary-400 font-semibold">{auction.seller?.username || 'Unknown'}</span></span>
+                  <span>Sold by: <span style={{color: '#4ecdc4', fontWeight: '600'}}>{auction.seller?.username || 'Unknown'}</span></span>
                 </div>
-                <p className="text-gray-300 leading-relaxed">{auction.description}</p>
+                <p className="auction-detail-description">{auction.description}</p>
               </div>
               
-              <div className="bg-gray-900 rounded-xl p-6 mb-6 border border-gray-600">
-                <div className="grid grid-cols-2 gap-6">
+              <div className="bid-section">
+                <div className="bid-grid">
                   <div>
-                    <p className="text-gray-400 text-sm mb-1">Current Bid</p>
-                    <p className="text-3xl font-bold text-primary-400">₹{auction.currentBid.toLocaleString()}</p>
+                    <p className="bid-label-large">Current Bid</p>
+                    <p className="bid-amount-large">₹{auction.currentBid.toLocaleString()}</p>
                     {auction.highestBidder && (
-                      <p className="text-sm text-gray-500 mt-1">
+                      <p className="highest-bidder">
                         by {auction.highestBidder.username}
                       </p>
                     )}
                   </div>
-                  <div className="text-right">
-                    <p className="text-gray-400 text-sm mb-1">Time Left</p>
-                    <div className="flex items-center justify-end space-x-2">
-                      <FaClock className={`${isAuctionOver ? 'text-red-400' : 'text-yellow-400'}`} />
-                      <p className={`text-xl font-bold ${isAuctionOver ? 'text-red-400' : 'text-yellow-400'}`}>
+                  <div className="time-remaining">
+                    <p className="bid-label-large">Time Left</p>
+                    <div className="time-display">
+                      <FaClock style={{color: isAuctionOver ? '#ff6b6b' : '#ffd700'}} />
+                      <p className="time-value" style={{color: isAuctionOver ? '#ff6b6b' : '#ffd700'}}>
                         {timeLeft}
                       </p>
                     </div>
@@ -129,28 +126,79 @@ const AuctionPage = () => {
               </div>
               
               {error && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
-                  <p className="text-red-400 text-sm">{error}</p>
+                <div className="error-message">
+                  <p>{error}</p>
                 </div>
               )}
               
               {!isAuctionOver ? (
                 <div>
                   {!user && (
-                    <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 mb-6">
-                      <p className="text-yellow-400 text-sm">
-                        <Link to="/login" className="underline">Login</Link> to place a bid
+                    <div style={{background: 'rgba(255, 193, 7, 0.1)', border: '1px solid rgba(255, 193, 7, 0.3)', borderRadius: '8px', padding: '12px', marginBottom: '24px'}}>
+                      <p style={{color: '#ffc107', fontSize: '0.9rem'}}>
+                        <Link to="/login" style={{textDecoration: 'underline', color: '#ffc107'}}>Login</Link> to place a bid
                       </p>
                     </div>
                   )}
-                  <form onSubmit={handleBidSubmit} className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <form onSubmit={handleBidSubmit}>
+                    <div className="form-group">
+                      <label className="form-label">
                         Your Bid Amount (₹)
                       </label>
-                      <div className="flex space-x-3">
-                        <div className="flex-1 relative">
-                          <FaGavel className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <div className="bid-form">
+                        <div className="bid-input-container">
+                          <div className="input-container">
+                            <FaGavel className="input-icon" />
+                            <input 
+                              type="number" 
+                              value={bidAmount} 
+                              onChange={(e) => setBidAmount(e.target.value)} 
+                              placeholder={`Minimum: ₹${auction.currentBid + 1}`} 
+                              className="form-input" 
+                              min={auction.currentBid + 1}
+                              required 
+                              disabled={!user || loading} 
+                            />
+                          </div>
+                        </div>
+                        <button 
+                          type="submit" 
+                          className="btn btn-primary" 
+                          disabled={!user || loading}
+                          style={{opacity: (!user || loading) ? 0.5 : 1, cursor: (!user || loading) ? 'not-allowed' : 'pointer'}}
+                        >
+                          {loading ? (
+                            <div className="loading-spinner" style={{width: '20px', height: '20px', margin: 0}}></div>
+                          ) : (
+                            'Place Bid'
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              ) : (
+                <div className="winner-section">
+                  <FaTrophy className="winner-icon" />
+                  <h3 className="winner-title">Auction Ended</h3>
+                  <p className="winner-info">
+                    Winner: <span style={{color: '#4ecdc4', fontWeight: '600'}}>
+                      {auction.highestBidder?.username || 'No bids placed'}
+                    </span>
+                  </p>
+                  <p className="final-bid">
+                    Final bid: <span style={{color: '#4ecdc4', fontWeight: '600'}}>₹{auction.currentBid.toLocaleString()}</span>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+    </main>
+  );
+};
+
+export default AuctionPage;
                           <input 
                             type="number" 
                             value={bidAmount} 

@@ -7,30 +7,29 @@ const AuctionCard = ({ auction }) => {
   const timeLeft = formatDistanceToNow(new Date(auction.endTime), { addSuffix: true });
 
   return (
-    <Link to={`/auctions/${auction._id}`} className="card group">
-      <div className="relative overflow-hidden">
+    <Link to={`/auctions/${auction._id}`} className="auction-card">
+      <div className="auction-image">
         <img 
           src={auction.imageUrl} 
           alt={auction.title} 
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" 
+          alt={auction.title}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary-400 transition-colors">{auction.title}</h3>
-        <div className="flex items-center text-gray-400 text-sm mb-4">
+      <div className="auction-content">
+        <h3 className="auction-title">{auction.title}</h3>
+        <div className="auction-seller">
           <FaUser className="mr-2" />
           <span>Sold by: {auction.seller.username}</span>
         </div>
-        <div className="flex justify-between items-end">
-          <div className="flex-1">
-            <p className="text-gray-400 text-sm">Current Bid</p>
-            <p className="text-2xl font-bold text-primary-400">₹{auction.currentBid.toLocaleString()}</p>
+        <div className="auction-footer">
+          <div className="bid-info">
+            <p className="bid-label">Current Bid</p>
+            <p className="bid-amount">₹{auction.currentBid.toLocaleString()}</p>
           </div>
-          <div className="text-right">
-            <div className="flex items-center text-red-400 text-sm">
+          <div className="time-info">
+            <div className="time-left">
               <FaClock className="mr-1" />
-              <span className="font-semibold">{timeLeft}</span>
+              <span>{timeLeft}</span>
             </div>
           </div>
         </div>

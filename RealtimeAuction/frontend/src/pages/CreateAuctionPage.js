@@ -37,67 +37,67 @@ const CreateAuctionPage = () => {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4">
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700">
-          <div className="text-center mb-8">
-            <FaPlus className="text-4xl text-primary-500 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-white">List a New Item</h2>
-            <p className="text-gray-400 mt-2">Create an auction for your item</p>
+    <div style={{minHeight: '100vh', padding: '40px 20px'}}>
+      <div style={{maxWidth: '800px', margin: '0 auto'}}>
+        <div className="form-container">
+          <div className="form-header">
+            <FaPlus className="form-icon" />
+            <h2 className="form-title">List a New Item</h2>
+            <p className="form-subtitle">Create an auction for your item</p>
           </div>
           
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
-              <p className="text-red-400 text-sm">{error}</p>
+            <div className="error-message">
+              <p>{error}</p>
             </div>
           )}
           
-          <form onSubmit={onSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+          <form onSubmit={onSubmit}>
+            <div className="form-group">
+              <label className="form-label">
                 Item Title
               </label>
-              <div className="relative">
-                <FaFileAlt className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="input-container">
+                <FaFileAlt className="input-icon" />
                 <input 
                   type="text" 
                   name="title" 
                   value={title} 
                   onChange={onChange} 
-                  className="form-input pl-10" 
+                  className="form-input" 
                   placeholder="Enter item title"
                   required 
                 />
               </div>
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Description
               </label>
               <textarea 
                 name="description" 
                 value={description} 
                 onChange={onChange} 
-                className="form-input min-h-[120px] resize-none" 
+                className="form-input form-textarea" 
                 placeholder="Describe your item in detail..."
                 required 
               />
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+            <div className="form-grid">
+              <div className="form-group">
+                <label className="form-label">
                   Starting Bid (₹)
                 </label>
-                <div className="relative">
-                  <FaDollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <div className="input-container">
+                  <FaDollarSign className="input-icon" />
                   <input 
                     type="number" 
                     name="startingBid" 
                     value={startingBid} 
                     onChange={onChange} 
-                    className="form-input pl-10" 
+                    className="form-input" 
                     min="1" 
                     placeholder="100"
                     required 
@@ -105,47 +105,47 @@ const CreateAuctionPage = () => {
                 </div>
               </div>
               
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+              <div className="form-group">
+                <label className="form-label">
                   Auction End Time
                 </label>
-                <div className="relative">
-                  <FaClock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <div className="input-container">
+                  <FaClock className="input-icon" />
                   <input 
                     type="datetime-local" 
                     name="endTime" 
                     value={endTime} 
                     onChange={onChange} 
-                    className="form-input pl-10" 
+                    className="form-input" 
                     required 
                   />
                 </div>
               </div>
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+            <div className="form-group">
+              <label className="form-label">
                 Image URL
               </label>
-              <div className="relative">
-                <FaImage className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="input-container">
+                <FaImage className="input-icon" />
                 <input 
                   type="url" 
                   name="imageUrl" 
                   value={imageUrl} 
                   onChange={onChange} 
-                  className="form-input pl-10" 
+                  className="form-input" 
                   placeholder="https://example.com/image.jpg"
                   required 
                 />
               </div>
               {imageUrl && (
-                <div className="mt-4">
-                  <p className="text-sm text-gray-400 mb-2">Preview:</p>
+                <div style={{marginTop: '16px'}}>
+                  <p style={{fontSize: '0.9rem', color: '#b0b0b0', marginBottom: '8px'}}>Preview:</p>
                   <img 
                     src={imageUrl} 
                     alt="Preview" 
-                    className="w-full h-48 object-cover rounded-lg border border-gray-600"
+                    style={{width: '100%', height: '200px', objectFit: 'cover', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.2)'}}
                     onError={(e) => {
                       e.target.style.display = 'none';
                     }}
@@ -157,10 +157,11 @@ const CreateAuctionPage = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full btn btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-primary"
+              style={{width: '100%', justifyContent: 'center', opacity: loading ? 0.5 : 1, cursor: loading ? 'not-allowed' : 'pointer'}}
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <div className="loading-spinner" style={{width: '20px', height: '20px', margin: 0}}></div>
               ) : (
                 <>
                   <FaPlus />

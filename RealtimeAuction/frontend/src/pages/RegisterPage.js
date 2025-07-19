@@ -30,70 +30,70 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="max-w-md w-full">
-        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 border border-gray-700">
-          <div className="text-center mb-8">
-            <FaUserPlus className="text-4xl text-primary-500 mx-auto mb-4" />
-            <h2 className="text-3xl font-bold text-white">Join LiveAuction</h2>
-            <p className="text-gray-400 mt-2">Create your account to start bidding</p>
+    <div style={{minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'}}>
+      <div style={{width: '100%', maxWidth: '500px'}}>
+        <div className="form-container">
+          <div className="form-header">
+            <FaUserPlus className="form-icon" />
+            <h2 className="form-title">Join LiveAuction</h2>
+            <p className="form-subtitle">Create your account to start bidding</p>
           </div>
           
           {error && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
-              <p className="text-red-400 text-sm">{error}</p>
+            <div className="error-message">
+              <p>{error}</p>
             </div>
           )}
           
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="username" className="form-label">
                 Username
               </label>
-              <div className="relative">
-                <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="input-container">
+                <FaUser className="input-icon" />
                 <input 
                   type="text" 
                   id="username" 
                   value={username} 
                   onChange={(e) => setUsername(e.target.value)} 
-                  className="form-input pl-10" 
+                  className="form-input" 
                   placeholder="Choose a username"
                   required 
                 />
               </div>
             </div>
             
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
                 Email Address
               </label>
-              <div className="relative">
-                <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="input-container">
+                <FaEnvelope className="input-icon" />
                 <input 
                   type="email" 
                   id="email" 
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)} 
-                  className="form-input pl-10" 
+                  className="form-input" 
                   placeholder="Enter your email"
                   required 
                 />
               </div>
             </div>
             
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
-              <div className="relative">
-                <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="input-container">
+                <FaLock className="input-icon" />
                 <input 
                   type="password" 
                   id="password" 
                   value={password} 
                   onChange={(e) => setPassword(e.target.value)} 
-                  className="form-input pl-10" 
+                  className="form-input" 
                   placeholder="Create a password (min. 6 characters)"
                   required 
                 />
@@ -103,10 +103,11 @@ const RegisterPage = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full btn btn-primary flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn btn-primary"
+              style={{width: '100%', justifyContent: 'center', opacity: loading ? 0.5 : 1, cursor: loading ? 'not-allowed' : 'pointer'}}
             >
               {loading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <div className="loading-spinner" style={{width: '20px', height: '20px', margin: 0}}></div>
               ) : (
                 <>
                   <FaUserPlus />
@@ -116,10 +117,10 @@ const RegisterPage = () => {
             </button>
           </form>
           
-          <div className="mt-6 text-center">
-            <p className="text-gray-400">
+          <div style={{marginTop: '24px', textAlign: 'center'}}>
+            <p style={{color: '#b0b0b0'}}>
               Already have an account?{' '}
-              <Link to="/login" className="text-primary-400 hover:text-primary-300 font-semibold transition-colors">
+              <Link to="/login" style={{color: '#4ecdc4', fontWeight: '600', textDecoration: 'none'}}>
                 Sign in here
               </Link>
             </p>
